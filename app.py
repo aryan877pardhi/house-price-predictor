@@ -9,7 +9,7 @@ model = pickle.load(open("model.pkl", "rb"))
 st.set_page_config(page_title="House Price Predictor", layout="centered")
 
 st.title("🏠 House Price Predictor")
-st.markdown("### Enter details to estimate house price")
+st.markdown("### Predict house prices using Machine Learning")
 
 
 col1, col2 = st.columns(2)
@@ -30,23 +30,24 @@ location = st.selectbox("Select Location", locations)
 
 if st.button("Predict Price"):
 
-    input_df = pd.DataFrame({
-        'total_sqft': [sqft],
-        'bath': [bath],
-        'bhk': [bhk],
-        'location': [location]
-    })
+    
+    if sqft <= 0:
+        st.error("❌ Please enter valid square feet")
+    else:
+        input_df = pd.DataFrame({
+            'total_sqft': [sqft],
+            'bath': [bath],
+            'bhk': [bhk],
+            'location': [location]
+        })
 
-    try:
-        prediction = model.predict(input_df)
-        st.success(f"💰 Estimated Price: ₹ {prediction[0]:.2f} Lakhs")
+        try:
+            prediction = model.predict(input_df)
+            st.success(f"💰 Estimated Price: ₹ {prediction[0]:.2f} Lakhs")
+        except Exception as e:
+            st.error("Something went wrong!")
+            st.write(e)
 
-    except Exception as e:
-        st.error("❌ Something went wrong. Please check input.")
-        st.write(e)
 
-# -------------------------------
-# Footer
-# -------------------------------
 st.markdown("---")
-st.markdown("Built with ❤️ using Machine Learning & Streamlit")
+st.markdown("Built with ❤️ by Aryan Pardhi")
