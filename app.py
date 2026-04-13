@@ -2,22 +2,16 @@ import streamlit as st
 import pandas as pd
 import pickle
 
-# -------------------------------
-# Load Model
-# -------------------------------
+
 model = pickle.load(open("model.pkl", "rb"))
 
-# -------------------------------
-# Page Config
-# -------------------------------
+
 st.set_page_config(page_title="House Price Predictor", layout="centered")
 
 st.title("🏠 House Price Predictor")
 st.markdown("### Enter details to estimate house price")
 
-# -------------------------------
-# Inputs (Better UI)
-# -------------------------------
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -27,15 +21,13 @@ with col1:
 with col2:
     bath = st.number_input("Bathrooms", min_value=1, max_value=10, value=2)
 
-# 🔥 Load unique locations from dataset (best practice)
+
 data = pd.read_csv("bengaluru_house_prices.csv")
 locations = sorted(data['location'].dropna().unique())
 
 location = st.selectbox("Select Location", locations)
 
-# -------------------------------
-# Prediction
-# -------------------------------
+
 if st.button("Predict Price"):
 
     input_df = pd.DataFrame({
